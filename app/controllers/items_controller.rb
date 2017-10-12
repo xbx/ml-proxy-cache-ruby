@@ -1,25 +1,41 @@
 require 'mercado_libre'
+require 'benchmark'
+
 class ItemsController < ApplicationController
 
   # GET /items/1
-  def show
-    detail = get_item()
-    if detail == nil
-      return render json: {
-        error: 'not found' 
+  def get_item
+    begin
+      id = params[:id]
+      cache_hit = true
+      item = nil
+
+      # Search for the saved item
+      time = Benchmark.measure do
+        item = find_item(id)
+      end
+
+      if item === nil
+        cache_hit = false
+      
+        time = Benchmark.measure do
+          # Retrieve the item from a new API request
+          item = retrieve_item(id)
+        end
+      end
+
+      item.hit_counter = (item.hit_counter || 0) + 1
+      item.save
+      render :json => {
+        item: item,
+        cache_hit: cache_hit,
+        total_time: time.real
+      }
+    rescue MercadoLibre::MercadoLibreException => e
+      render :json => {
+        error: e.message
       }
     end
-
-    item = Item.new()
-    item.ml_id = detail["id"]
-    item.detail = {
-      title: detail["title"]
-    }
-    item.save
-
-    render :json => {
-      id: item.ml_id
-    }
   end
 
   def all
@@ -28,11 +44,19 @@ class ItemsController < ApplicationController
   end
 
   private
-    def get_item
-      id = params[:id]
-      raw_item = MercadoLibre.new().item(id)
-      
-      return raw_item
+    def find_item id
+      Item.where(:ml_id => id).first()
+    end
+
+    def retrieve_item id
+      raw_item = MercadoLibre::MercadoLibreAPI.new().item(id)
+  
+      item = Item.new()
+      item.ml_id = raw_item["id"]
+      item.title = raw_item["title"]
+      item.thumbnail = raw_item["thumbnail"]
+      item.save
+      return item
     end
 
 end

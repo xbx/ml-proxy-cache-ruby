@@ -12,6 +12,7 @@ services:
       - 5000:3000
     volumes:
       - ./:/app/
+      - $HOME/.aws/:/root/.aws/
   
   dynamodb:
     image: cnadiminti/dynamodb-local

@@ -2,6 +2,8 @@ class Item
     include Dynamoid::Document
 
     field :ml_id
-    field :detail, :raw    
+    field :thumbnail
+    field :title
+    field :hit_counter, :integer
   
 end
