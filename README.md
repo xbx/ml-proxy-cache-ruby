@@ -1,4 +1,6 @@
-# README
+# ML API Proxy
+
+Written in Ruby. DB by DynamoDB
 
 ## Run
 
