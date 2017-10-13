@@ -31,10 +31,11 @@ class ItemsController < ApplicationController
         cache_hit: cache_hit,
         total_time: time.real
       }
-    rescue MercadoLibre::MercadoLibreException => e
-      render :json => {
-        error: e.message
-      }
+    rescue Exception => e
+      render :status => :not_found,
+             :json => {
+               error: e.message
+             }
     end
   end
 
@@ -55,6 +56,8 @@ class ItemsController < ApplicationController
       item.ml_id = raw_item["id"]
       item.title = raw_item["title"]
       item.thumbnail = raw_item["thumbnail"]
+      item.permalink = raw_item["permalink"]
+      
       item.save
       return item
     end

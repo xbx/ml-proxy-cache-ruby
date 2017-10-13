@@ -14,7 +14,7 @@ module MercadoLibre
             if response.code == '200'
                 return JSON.parse(response.body)
             else
-                raise RangeError, "got error from server. Status code: #{response.code}"
+                raise MercadoLibreException, "got error from server. Status code: #{response.code}"
             end
         end
     end

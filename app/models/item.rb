@@ -5,5 +5,7 @@ class Item
     field :thumbnail
     field :title
     field :hit_counter, :integer
+    field :permalink
   
+    #index :ml_id
 end

@@ -1,0 +1,31 @@
+<html>
+<head>
+    <style>
+        ul.items li {
+          width: 200px;
+          display: inline-block;
+          vertical-align: top;
+          *display: inline;
+          *zoom: 1;
+      }
+    </style>
+</head>
+<body>
+    <p id="notice"><%= notice %></p>
+        
+    <h1>Items</h1>
+    
+    <ul class="items">
+      <% @items.each do |item| %>
+      <li>
+          <a href="#">
+              <a href="<%= item.permalink %>"><img src="<%= item.thumbnail %>"></a>
+              <h4><%= item.title %></h4>
+              <p> requested <%= item.hit_counter %> times</p>
+          </a>
+      </li>
+      <% end %>
+    </ul>
+</body>
+</html>
+
