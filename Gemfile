@@ -7,6 +7,8 @@ end
 
 gem 'aws-sdk', '~>2'
 gem 'dynamoid'
+gem 'rack-cors'
+
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.4'

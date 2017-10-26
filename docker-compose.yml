@@ -6,17 +6,17 @@ services:
     command: sh -c 'rake db:migrate; rails s'
     environment:
       RAILS_ENV: development
-    depends_on:
-      - dynamodb
+#    depends_on:
+#      - dynamodb
     ports:
       - 5000:3000
     volumes:
       - ./:/app/
       - $HOME/.aws/:/root/.aws/
   
-  dynamodb:
-    image: cnadiminti/dynamodb-local
-    ports:
-      - 8000:8000
-    volumes:
-      - ./db/:/dynamodb_local_db/
+#  dynamodb:
+#    image: cnadiminti/dynamodb-local
+#    ports:
+#      - 8000:8000
+#    volumes:
+#      - ./db/:/dynamodb_local_db/
